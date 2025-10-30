@@ -13,20 +13,7 @@ if not token:
     with open('token.txt', 'r', encoding='utf8') as tokenFile:
         token = tokenFile.read().strip()
 
-@bot.event
-async def on_message(message: discord.Message):
-    c = []
-    if 'weh' in message.content.lower():
-        c.append(message.add_reaction('<:noweh:1414871407493517332>'))
-    
-    if 'mizukicrying' in message.content.lower():
-        c.append(message.add_reaction('<:mizukicrying:1397846161250979913>'))
-    
-    await asyncio.gather(*c)
-
-@bot.event
-async def on_message_edit(before, after):
-    message = after
+async def handleMessage(message: discord.Message):
     c = []
     
     filter = '|*_ (){}[];:'
@@ -41,5 +28,13 @@ async def on_message_edit(before, after):
         c.append(message.add_reaction('<:mizukicrying:1397846161250979913>'))
     
     await asyncio.gather(*c)
+
+@bot.event
+async def on_message(message: discord.Message):
+    await handleMessage(message)
+
+@bot.event
+async def on_message_edit(before, after):
+    await handleMessage(after)
 
 bot.run(token)
