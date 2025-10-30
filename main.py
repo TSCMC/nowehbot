@@ -24,7 +24,7 @@ async def handleMessage(message: discord.Message):
     if ('weh' in sanitized_content) or ('ɥǝʍ' in sanitized_content):
         c.append(message.add_reaction('<:noweh:1414871407493517332>'))
     
-    if 'mizukicrying' in sanitized_content:
+    if 'mizukicry' in sanitized_content:
         c.append(message.add_reaction('<:mizukicrying:1397846161250979913>'))
     
     await asyncio.gather(*c)
