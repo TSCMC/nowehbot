@@ -16,10 +16,16 @@ nomizukycrying = None
 async def on_message(message: discord.Message):
     print(message.content)
     c = []
-    if ('weh' in message.content.lower()) or ('ɥǝʍ' in message.content):
+    
+    filter = '|*_ (){}[];:'
+    sanitised_content = message.content.lower()
+    for char in filter:
+        sanitized_content = sanitized_content.replace(char,'')
+    
+    if ('weh' in sanitized_content) or ('ɥǝʍ' in sanitized_content):
         c.append(message.add_reaction('<:noweh:1414871407493517332>'))
     
-    if 'mizukicrying' in message.content.lower():
+    if 'mizukicrying' in sanitized_content:
         c.append(message.add_reaction('<:mizukicrying:1397846161250979913>'))
     
     await asyncio.gather(*c)
