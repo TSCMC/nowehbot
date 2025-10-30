@@ -14,7 +14,18 @@ nomizukycrying = None
 
 @bot.event
 async def on_message(message: discord.Message):
-    print(message.content)
+    c = []
+    if 'weh' in message.content.lower():
+        c.append(message.add_reaction('<:noweh:1414871407493517332>'))
+    
+    if 'mizukicrying' in message.content.lower():
+        c.append(message.add_reaction('<:mizukicrying:1397846161250979913>'))
+    
+    await asyncio.gather(*c)
+
+@bot.event
+async def on_message_edit(before, after):
+    message = after
     c = []
     
     filter = '|*_ (){}[];:'
