@@ -17,7 +17,7 @@ async def handleMessage(message: discord.Message):
     c = []
     
     filter = '|*_ (){}[];:'
-    sanitised_content = message.content.lower()
+    sanitized_content = message.content.lower()
     for char in filter:
         sanitized_content = sanitized_content.replace(char,'')
     
