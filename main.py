@@ -16,7 +16,7 @@ nomizukycrying = None
 async def on_message(message: discord.Message):
     print(message.content)
     c = []
-    if 'weh' in message.content.lower():
+    if ('weh' in message.content.lower()) or ('ɥǝʍ' in message.content):
         c.append(message.add_reaction('<:noweh:1414871407493517332>'))
     
     if 'mizukicrying' in message.content.lower():
