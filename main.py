@@ -1,13 +1,17 @@
 import discord
 import asyncio
+import os
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 bot = discord.Client(intents=intents)
 
-with open('token.txt', 'r', encoding='utf8') as tokenFile:
-    token = tokenFile.read().strip()
+token = os.getenv('NOWEHBOT_TOKEN')
+
+if not token:
+    with open('token.txt', 'r', encoding='utf8') as tokenFile:
+        token = tokenFile.read().strip()
 
 @bot.event
 async def on_message(message: discord.Message):
