@@ -2,6 +2,7 @@ from ast import Tuple
 import discord
 import asyncio
 import os
+import csv
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -18,19 +19,19 @@ if not token:
 # keyword file reading
 keywordFileString=''
 try:
-    with open('keywords.csv', 'r', encoding='utf8') as keywordFile:
-        keywordFileString=keywordFile.read()
+    keywordFile = open('keywords.csv', 'r', encoding='utf8')
 except FileNotFoundError:
     with open('TEMPLATE_keywords.csv','r', encoding='utf8') as keywordFile:
         keywordFileString=keywordFile.read()
         with open('keywords.csv','w',encoding='utf8') as newKeywordFile:
             newKeywordFile.write(keywordFileString)
+    keywordFile = open('keywords.csv', 'r', encoding='utf8')
 
 # make dictionary
-keywordLineArray=keywordFileString.split('\n')
-for keywordLine in keywordLineArray:
-    linepair = keywordLine.split()
-    keywordDict[linepair[0]]=Tuple(linepair[1],linepair[2])
+keywordFileDict = csv.DictReader(keywordFile)
+for row in keywordFileDict:
+    keywordDict[row['keyword']]=Tuple(row['emojiName'],row['emojiID'])
+keywordFile.close()
 
 async def handleMessage(message: discord.Message):
     c = []
@@ -42,7 +43,7 @@ async def handleMessage(message: discord.Message):
     
     for keyword,reaction in keywordDict.items():
         if keyword in sanitized_content:
-            c.append(message.add_reaction('<:'+reaction[0]+':'+reaction[1]+'>'))
+            c.append(message.add_reaction(f'<:{reaction[0]}:{reaction[1]}>'))
     
     await asyncio.gather(*c)
 
