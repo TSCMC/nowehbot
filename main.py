@@ -1,3 +1,4 @@
+from ast import Tuple
 import discord
 import asyncio
 import os
@@ -8,10 +9,28 @@ intents.message_content = True
 bot = discord.Client(intents=intents)
 
 token = os.getenv('NOWEHBOT_TOKEN')
+keywordDict = dict()
 
 if not token:
     with open('token.txt', 'r', encoding='utf8') as tokenFile:
         token = tokenFile.read().strip()
+
+# keyword file reading
+keywordFileString=''
+try:
+    with open('keywords.csv', 'r', encoding='utf8') as keywordFile:
+        keywordFileString=keywordFile.read()
+except FileNotFoundError:
+    with open('TEMPLATE_keywords.csv','r', encoding='utf8') as keywordFile:
+        keywordFileString=keywordFile.read()
+        with open('keywords.csv','w',encoding='utf8') as newKeywordFile:
+            newKeywordFile.write(keywordFileString)
+
+# make dictionary
+keywordLineArray=keywordFileString.split('\n')
+for keywordLine in keywordLineArray:
+    linepair = keywordLine.split()
+    keywordDict[linepair[0]]=Tuple(linepair[1],linepair[2])
 
 async def handleMessage(message: discord.Message):
     c = []
@@ -21,11 +40,9 @@ async def handleMessage(message: discord.Message):
     for char in filter:
         sanitized_content = sanitized_content.replace(char,'')
     
-    if ('weh' in sanitized_content) or ('ɥǝʍ' in sanitized_content):
-        c.append(message.add_reaction('<:noweh:1414871407493517332>'))
-    
-    if 'mizukicry' in sanitized_content:
-        c.append(message.add_reaction('<:mizukicrying:1397846161250979913>'))
+    for keyword,reaction in keywordDict.items():
+        if keyword in sanitized_content:
+            c.append(message.add_reaction('<:'+reaction[0]+':'+reaction[1]+'>'))
     
     await asyncio.gather(*c)
 
