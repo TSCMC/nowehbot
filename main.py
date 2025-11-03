@@ -36,7 +36,7 @@ keywordFile.close()
 async def handleMessage(message: discord.Message):
     c = []
     
-    filter = '|*_ (){}[];:'
+    filter = '|*_(){}[];:'
     sanitized_content = message.content.lower()
     for char in filter:
         sanitized_content = sanitized_content.replace(char,'')
