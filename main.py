@@ -1,4 +1,3 @@
-from ast import Tuple
 import discord
 import asyncio
 import os
@@ -30,7 +29,7 @@ except FileNotFoundError:
 # make dictionary
 keywordFileDict = csv.DictReader(keywordFile)
 for row in keywordFileDict:
-    keywordDict[row['keyword']]=Tuple(row['emojiName'],row['emojiID'])
+    keywordDict[row['keyword']] = (row['emojiName'], row['emojiID'])
 keywordFile.close()
 
 async def handleMessage(message: discord.Message):
